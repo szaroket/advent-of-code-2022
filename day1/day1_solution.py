@@ -11,7 +11,7 @@ def read_input() -> list:
     return data
 
 
-def prepare_data(data: list) -> list:
+def prepare_data(data: str) -> list:
     return [list(map(int, elf.split("\n"))) for elf in data.split("\n\n")]
 
 
