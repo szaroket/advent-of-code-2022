@@ -4,6 +4,8 @@
 
 from enum import IntEnum
 
+SHAPE_SEPARATOR = " "
+
 
 class Points(IntEnum):
     LOSS = 0
@@ -39,24 +41,24 @@ REQUIRED_SHAPE = {
 }
 
 
-def read_input() -> list:
+def read_input() -> str:
     with open("input.txt", "r") as f:
         data = f.read()
     return data
 
 
 def prepare_data(data: str) -> list:
-    return [tuple(pair.split(" ")) for pair in data.split("\n")]
+    return [tuple(pair.split(SHAPE_SEPARATOR)) for pair in data.split("\n")]
 
 
-def calculate_points_part1(rounds: list) -> int:
+def calculate_points_part1(rounds: list[tuple]) -> int:
     total_points = 0
     for one_round in rounds:
         total_points = total_points + Points[ROUND_RESULT[one_round]].value + Points[one_round[1]].value
     return total_points
 
 
-def calculate_points_part2(rounds: list) -> int:
+def calculate_points_part2(rounds: list[tuple]) -> int:
     total_points = 0
     for one_round in rounds:
         shapes = (one_round[0], REQUIRED_SHAPE[one_round])
