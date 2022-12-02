@@ -5,7 +5,7 @@
 TOP_NUMBER_OF_ELVES = 3
 
 
-def read_input() -> list:
+def read_input() -> str:
     with open("input.txt", "r") as f:
         data = f.read()
     return data
