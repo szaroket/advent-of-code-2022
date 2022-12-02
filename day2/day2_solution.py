@@ -17,27 +17,27 @@ class Points(IntEnum):
 
 
 ROUND_RESULT = {
-    ('A', 'X'): "DRAW",
-    ('A', 'Y'): "WIN",
-    ('A', 'Z'): "LOSS",
-    ('B', 'X'): "LOSS",
-    ('B', 'Y'): "DRAW",
-    ('B', 'Z'): "WIN",
-    ('C', 'X'): "WIN",
-    ('C', 'Y'): "LOSS",
-    ('C', 'Z'): "DRAW"
+    ("A", "X"): "DRAW",
+    ("A", "Y"): "WIN",
+    ("A", "Z"): "LOSS",
+    ("B", "X"): "LOSS",
+    ("B", "Y"): "DRAW",
+    ("B", "Z"): "WIN",
+    ("C", "X"): "WIN",
+    ("C", "Y"): "LOSS",
+    ("C", "Z"): "DRAW",
 }
 
 REQUIRED_SHAPE = {
-    ('A', 'X'): "Z",
-    ('A', 'Y'): "X",
-    ('A', 'Z'): "Y",
-    ('B', 'X'): "X",
-    ('B', 'Y'): "Y",
-    ('B', 'Z'): "Z",
-    ('C', 'X'): "Y",
-    ('C', 'Y'): "Z",
-    ('C', 'Z'): "X"
+    ("A", "X"): "Z",
+    ("A", "Y"): "X",
+    ("A", "Z"): "Y",
+    ("B", "X"): "X",
+    ("B", "Y"): "Y",
+    ("B", "Z"): "Z",
+    ("C", "X"): "Y",
+    ("C", "Y"): "Z",
+    ("C", "Z"): "X",
 }
 
 
@@ -54,7 +54,11 @@ def prepare_data(data: str) -> list:
 def calculate_points_part1(rounds: list[tuple]) -> int:
     total_points = 0
     for one_round in rounds:
-        total_points = total_points + Points[ROUND_RESULT[one_round]].value + Points[one_round[1]].value
+        total_points = (
+            total_points
+            + Points[ROUND_RESULT[one_round]].value
+            + Points[one_round[1]].value
+        )
     return total_points
 
 
@@ -62,7 +66,11 @@ def calculate_points_part2(rounds: list[tuple]) -> int:
     total_points = 0
     for one_round in rounds:
         shapes = (one_round[0], REQUIRED_SHAPE[one_round])
-        total_points = total_points + Points[ROUND_RESULT[shapes]].value + Points[REQUIRED_SHAPE[one_round]].value
+        total_points = (
+            total_points
+            + Points[ROUND_RESULT[shapes]].value
+            + Points[REQUIRED_SHAPE[one_round]].value
+        )
     return total_points
 
 
