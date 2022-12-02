@@ -26,6 +26,18 @@ ROUND_RESULT = {
     ('C', 'Z'): "DRAW"
 }
 
+REQUIRED_SHAPE = {
+    ('A', 'X'): "Z",
+    ('A', 'Y'): "X",
+    ('A', 'Z'): "Y",
+    ('B', 'X'): "X",
+    ('B', 'Y'): "Y",
+    ('B', 'Z'): "Z",
+    ('C', 'X'): "Y",
+    ('C', 'Y'): "Z",
+    ('C', 'Z'): "X"
+}
+
 
 def read_input() -> list:
     with open("input.txt", "r") as f:
@@ -37,15 +49,25 @@ def prepare_data(data: str) -> list:
     return [tuple(pair.split(" ")) for pair in data.split("\n")]
 
 
-def calculate_points(rounds: list) -> int:
+def calculate_points_part1(rounds: list) -> int:
     total_points = 0
     for one_round in rounds:
         total_points = total_points + Points[ROUND_RESULT[one_round]].value + Points[one_round[1]].value
     return total_points
 
 
+def calculate_points_part2(rounds: list) -> int:
+    total_points = 0
+    for one_round in rounds:
+        shapes = (one_round[0], REQUIRED_SHAPE[one_round])
+        total_points = total_points + Points[ROUND_RESULT[shapes]].value + Points[REQUIRED_SHAPE[one_round]].value
+    return total_points
+
+
 if __name__ == "__main__":
     input_data = read_input()
     prepared_data = prepare_data(input_data)
-    points = calculate_points(prepared_data)
-    print(f"Total score is: {points}")
+    part1_points = calculate_points_part1(prepared_data)
+    print(f"Total score for part 1 is: {part1_points}")
+    part2_points = calculate_points_part2(prepared_data)
+    print(f"Total score for part 2 is: {part2_points}")
