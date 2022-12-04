@@ -1,7 +1,6 @@
 # Advent of code 2022
 # Day 3: Rucksack Reorganization
 # https://adventofcode.com/2022/day/3
-from typing import Tuple
 
 import numpy as np
 
