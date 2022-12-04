@@ -24,7 +24,16 @@ def calculate_overlapping(coordinates_list: list[list]) -> None:
     print(f"Number of pairs that one range fully contain the other: {overlapping_sum}")
 
 
+def calculate_overlapping_at_all(coordinates_list: list[list]) -> None:
+    overlapping_sum = 0
+    for a, b, x, y in coordinates_list:
+        if (min(b, y) - max(a, x)) >= 0:
+            overlapping_sum += 1
+    print(f"Number of pairs that ranges overlap: {overlapping_sum}")
+
+
 if __name__ == "__main__":
     input_data = read_input()
     prepared_data = prepare_data(input_data)
     calculate_overlapping(prepared_data)
+    calculate_overlapping_at_all(prepared_data)
