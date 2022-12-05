@@ -1,7 +1,7 @@
 # Advent of code 2022
 # Day 5: Supply Stacks
 # https://adventofcode.com/2022/day/5
-
+from copy import deepcopy
 from typing import Any
 import numpy as np
 
@@ -42,10 +42,24 @@ def get_last_stack(stacks: dict[Any, list[Any]]) -> str:
     return "".join(combination)
 
 
-def find_final_combination(stacks: dict[Any, list[Any]], operations: list) -> None:
+def find_final_combination_part1(
+    stacks: dict[Any, list[Any]], operations: list
+) -> None:
+    stacks_copy = deepcopy(stacks)
     for amount, stack_from, stack_to in operations:
         for _ in range(int(amount)):
-            stacks[stack_to].append(stacks[stack_from].pop())
+            stacks_copy[stack_to].append(stacks_copy[stack_from].pop())
+    final_combination = get_last_stack(stacks_copy)
+    print(f"The final combination is: {final_combination}")
+
+
+def find_final_combination_part2(
+    stacks: dict[Any, list[Any]], operations: list
+) -> None:
+    for amount, stack_from, stack_to in operations:
+        amount = int(amount)
+        stacks[stack_to].extend(stacks[stack_from][-amount:])
+        stacks[stack_from] = stacks[stack_from][:-amount]
     final_combination = get_last_stack(stacks)
     print(f"The final combination is: {final_combination}")
 
@@ -53,4 +67,5 @@ def find_final_combination(stacks: dict[Any, list[Any]], operations: list) -> No
 if __name__ == "__main__":
     input_data = read_input()
     stacks, operations = prepare_data(input_data)
-    find_final_combination(stacks, operations)
+    find_final_combination_part1(stacks, operations)
+    find_final_combination_part2(stacks, operations)
