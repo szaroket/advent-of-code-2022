@@ -2,6 +2,8 @@
 # Day 7: No Space Left On Device
 # https://adventofcode.com/2022/day/7
 SIZE_MIN = 100000
+TOTAL_DISK_SPACE = 70000000
+NEEDED_SPACE = 30000000
 FOLDERS_SIZES = []
 
 
@@ -57,6 +59,16 @@ def get_result_part1() -> int:
     return sum(number for number in FOLDERS_SIZES if number <= SIZE_MIN)
 
 
+def get_result_part2() -> int:
+    FOLDERS_SIZES.sort()
+    last_index = len(FOLDERS_SIZES) - 1
+    size_of_unused_space = TOTAL_DISK_SPACE - FOLDERS_SIZES[last_index]
+    space_to_free = NEEDED_SPACE - size_of_unused_space
+    for size in FOLDERS_SIZES:
+        if size >= space_to_free:
+            return size
+
+
 if __name__ == "__main__":
     input_data = read_input()
     list_of_cmd = prepare_data(input_data)
@@ -64,3 +76,5 @@ if __name__ == "__main__":
     total = calculate_sizes(folder_structure)
     result1 = get_result_part1()
     print(f"The sum of the total sizes of directories is: {result1}")
+    result2 = get_result_part2()
+    print(f"Size of folder to delete: {result2}")
