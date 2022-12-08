@@ -35,7 +35,36 @@ def calculate_visible_tree(trees: ndarray):
     print(f"Visible trees: {visible_trees}")
 
 
+def check_trees(max_high: int, trees: ndarray):
+    number_of_trees = 0
+    for tree in trees:
+        number_of_trees += 1
+        if tree >= max_high:
+            break
+    return number_of_trees
+
+
+def calculate_highest_scenic_score(trees: ndarray):
+    scenic_score = 0
+    for row_index, row in enumerate(trees):
+        for col_index, col in enumerate(row):
+            if (row_index != 0 and col_index != 0) and (
+                row_index != len(trees) - 1 and col_index != len(row) - 1
+            ):
+                tree_high = trees[row_index][col_index]
+                column = trees[:, col_index]
+                trees_left = check_trees(tree_high, np.flip(row[:col_index]))
+                trees_right = check_trees(tree_high, row[col_index + 1:])
+                trees_down = check_trees(tree_high, column[row_index + 1:])
+                trees_up = check_trees(tree_high, np.flip(column[:row_index]))
+                scenic_score_new = trees_up * trees_down * trees_right * trees_left
+                if scenic_score_new > scenic_score:
+                    scenic_score = scenic_score_new
+    print(f"The highest scenic score: {scenic_score}")
+
+
 if __name__ == "__main__":
     input_data = read_input()
     trees_map = prepare_data(input_data)
     calculate_visible_tree(trees_map)
+    calculate_highest_scenic_score(trees_map)
