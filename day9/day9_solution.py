@@ -3,9 +3,6 @@
 # https://adventofcode.com/2022/day/9
 import math
 
-START_X = 0
-START_Y = 0
-
 
 def read_input() -> str:
     with open("input.txt", "r") as f:
@@ -17,13 +14,7 @@ def prepare_data(data: str) -> list[tuple]:
     return [tuple(move.split(" ")) for move in data.split("\n")]
 
 
-def check_if_tail_in_grid(head_x, head_y, tail_x, tail_y):
-    if head_x == tail_x or head_y == tail_y:
-        return True
-    return False
-
-
-def perform_moves(moves: list[tuple]):
+def perform_moves_part1(moves: list[tuple]):
     head = [0, 0]
     tail = [0, 0]
     tail_positions = {tuple(tail)}
@@ -53,4 +44,4 @@ def perform_moves(moves: list[tuple]):
 if __name__ == "__main__":
     input_data = read_input()
     list_of_moves = prepare_data(input_data)
-    perform_moves(list_of_moves)
+    perform_moves_part1(list_of_moves)
