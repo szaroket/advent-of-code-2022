@@ -1,6 +1,8 @@
 # Advent of code 2022
 # Day 10: Cathode-Ray Tube
 # https://adventofcode.com/2022/day/10
+from typing import Tuple
+
 import numpy as np
 
 CYCLES = {20: 0, 60: 0, 100: 0, 140: 0, 180: 0, 220: 0}
@@ -28,28 +30,23 @@ def check_if_correct_cycle(cycle: int, value_x: int) -> None:
         CYCLES[cycle] = cycle * value_x
 
 
+def perform_procedure(cycle: int, value_x: int, row: int) -> tuple[int, int]:
+    draw_symbol(cycle, value_x, row)
+    cycle += 1
+    if cycle % 40 == 0:
+        row += 1
+    check_if_correct_cycle(cycle, value_x)
+    return cycle, row
+
+
 def execute_cmd(cmd_list: list) -> None:
     cycle = 0
     value_x = 1
     row = 0
     for cmd in cmd_list:
-        if cmd == "noop":
-            draw_symbol(cycle, value_x, row)
-            cycle += 1
-            check_if_correct_cycle(cycle, value_x)
-            if cycle % 40 == 0:
-                row += 1
-        else:
-            draw_symbol(cycle, value_x, row)
-            cycle += 1
-            if cycle % 40 == 0:
-                row += 1
-            check_if_correct_cycle(cycle, value_x)
-            draw_symbol(cycle, value_x, row)
-            cycle += 1
-            if cycle % 40 == 0:
-                row += 1
-            check_if_correct_cycle(cycle, value_x)
+        cycle, row = perform_procedure(cycle, value_x, row)
+        if cmd != "noop":
+            cycle, row = perform_procedure(cycle, value_x, row)
             value_y = int(cmd.split(" ")[1])
             value_x += value_y
     sum_cycle = sum(CYCLES.values())
