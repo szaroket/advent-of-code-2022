@@ -18,18 +18,18 @@ def prepare_data(data: str) -> list:
     return [cmd for cmd in data.split("\n")]
 
 
-def draw_symbol(cycle, x, row):
+def draw_symbol(cycle: int, x: int, row: int) -> None:
     if abs(x - (cycle % 40)) <= 1:
         GRID[row][cycle % 40] = LIT_PIXEL
 
 
-def check_if_correct_cycle(cycle, value_x):
+def check_if_correct_cycle(cycle: int, value_x: int) -> None:
     if cycle in CYCLES.keys():
         print(f"cycle: {cycle} and x {value_x}")
         CYCLES[cycle] = cycle * value_x
 
 
-def execute_cmd(cmd_list: list):
+def execute_cmd(cmd_list: list) -> None:
     cycle = 0
     value_x = 1
     row = 0
