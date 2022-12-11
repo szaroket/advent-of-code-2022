@@ -1,6 +1,8 @@
 # Advent of code 2022
 # Day 11: Monkey in the Middle
 # https://adventofcode.com/2022/day/11
+import copy
+import math
 import re
 
 
@@ -42,12 +44,11 @@ def create_monkey_instruction_struct(instructions_list: list) -> list[dict]:
     return monkeys_array
 
 
-def execute_rounds(monkeys: list[dict], rounds: int):
+def execute_rounds(monkeys: list[dict], rounds: int, divisor: int, lcm: int):
     for _ in range(rounds):
         for monkey in monkeys:
             items_index = 0
             for item in monkey["items"]:
-                # print(f"Monkey inspects an item with a worry level of {item}")
                 if monkey["operation"] == "*":
                     if monkey["number"] == -1:
                         worry_level = item * item
@@ -58,15 +59,11 @@ def execute_rounds(monkeys: list[dict], rounds: int):
                         worry_level = item + item
                     else:
                         worry_level = item + monkey["number"]
-                # print(f"  Worry level is multiplied by {monkey['operation']} to {worry_level}")
-                divided_worry_level = worry_level // 3
-                if divided_worry_level % monkey["test"] == 0:
-                    # print(f"  Item with worry level {divided_worry_level} is thrown to monkey {monkey['if_true']}")
-                    monkeys[monkey["if_true"]]["items"].append(divided_worry_level)
+                worry_level = (worry_level // divisor) % lcm
+                if worry_level % monkey["test"] == 0:
+                    monkeys[monkey["if_true"]]["items"].append(worry_level)
                 else:
-                    # print(f"  Current worry level is not divisible by {monkey['test']}")
-                    # print(f"  Item with worry level {divided_worry_level} is thrown to monkey {monkey['if_false']}")
-                    monkeys[monkey["if_false"]]["items"].append(divided_worry_level)
+                    monkeys[monkey["if_false"]]["items"].append(worry_level)
                 items_index += 1
                 monkey["inspected_number"] += 1
             monkey["items"] = monkey["items"][items_index:]
@@ -74,7 +71,7 @@ def execute_rounds(monkeys: list[dict], rounds: int):
         [monkey["inspected_number"] for monkey in monkeys], reverse=True
     )
     print(
-        f"The level of monkey business after 20 rounds of stuff-slinging simian shenanigans: {inspected_list[0] * inspected_list[1]}"
+        f"The level of monkey business after {rounds} rounds of stuff-slinging simian shenanigans: {inspected_list[0] * inspected_list[1]}"
     )
 
 
@@ -82,4 +79,7 @@ if __name__ == "__main__":
     input_data = read_input()
     prepared_data = prepare_data(input_data)
     monkeys_arr = create_monkey_instruction_struct(prepared_data)
-    execute_rounds(monkeys_arr, 20)
+    monkeys_arr_part2 = copy.deepcopy(monkeys_arr)
+    lcm = math.lcm(*[monkey["test"] for monkey in monkeys_arr])
+    execute_rounds(monkeys_arr, 20, 3, lcm)
+    execute_rounds(monkeys_arr_part2, 10000, 1, lcm)
