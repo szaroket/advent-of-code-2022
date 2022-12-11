@@ -25,7 +25,6 @@ def draw_symbol(cycle: int, x: int, row: int) -> None:
 
 def check_if_correct_cycle(cycle: int, value_x: int) -> None:
     if cycle in CYCLES.keys():
-        print(f"cycle: {cycle} and x {value_x}")
         CYCLES[cycle] = cycle * value_x
 
 
@@ -53,7 +52,8 @@ def execute_cmd(cmd_list: list) -> None:
             check_if_correct_cycle(cycle, value_x)
             value_y = int(cmd.split(" ")[1])
             value_x += value_y
-    print(sum(CYCLES.values()))
+    sum_cycle = sum(CYCLES.values())
+    print(f"The sum of these six signal strengths: {sum_cycle}")
     np.set_printoptions(linewidth=np.inf)
     print(np.array(GRID))
 
