@@ -1,6 +1,7 @@
 # Advent of code 2022
 # Day 12: Hill Climbing Algorithm
 # https://adventofcode.com/2022/day/12
+import copy
 import string
 from collections import deque as queue
 import numpy as np
@@ -27,7 +28,7 @@ def find_point(graph: list[list], point: str) -> tuple:
                 return col, row
 
 
-def solution_part1(
+def calculate_steps(
     graph: list[list[string]], starting_point: tuple, ending_point: tuple
 ):
     direction_x = [-1, 0, 1, 0]
@@ -61,9 +62,22 @@ if __name__ == "__main__":
     prepared_data = prepare_data(input_data)
     starting_point_coordinates = find_point(prepared_data, START_POINT)
     ending_point_coordinated = find_point(prepared_data, END_POINT)
-    steps = solution_part1(
-        prepared_data, starting_point_coordinates, ending_point_coordinated
+    graph_part1 = copy.deepcopy(prepared_data)
+    steps = calculate_steps(
+        graph_part1, starting_point_coordinates, ending_point_coordinated
     )
     print(
         f"The fewest steps required to move from your current position to the location: {steps}"
+    )
+    starting_points = []
+    for row in range(len(graph_part1)):
+        for col in range(len(graph_part1[0])):
+            if prepared_data[row][col] == "a":
+                starting_points.append((col, row))
+    steps2 = min(
+        calculate_steps(graph_part1, start_point, ending_point_coordinated) or 11111111
+        for start_point in starting_points
+    )
+    print(
+        f"The fewest steps required to move starting from any square with elevation a to the location: {steps2}"
     )
