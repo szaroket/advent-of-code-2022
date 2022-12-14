@@ -1,7 +1,7 @@
 # Advent of code 2022
 # Day 14: Regolith Reservoir
 # https://adventofcode.com/2022/day/14
-from typing import Any, Generator
+from typing import Any, Generator, Tuple
 
 SAND_SOURCE = (500, 0)
 FILLED = set()
@@ -72,16 +72,47 @@ def simulate_sand(max_high: int) -> bool:
     return False
 
 
+def simulate_sand2(max_high: int) -> tuple[int, int]:
+    x, y = SAND_SOURCE
+    while y <= max_high:
+        if (x, y + 1) not in FILLED:
+            y += 1
+            continue
+
+        if (x - 1, y + 1) not in FILLED:
+            x -= 1
+            y += 1
+            continue
+
+        if (x + 1, y + 1) not in FILLED:
+            x += 1
+            y += 1
+            continue
+
+        break
+
+    FILLED.add((x, y))
+    return x, y
+
+
 if __name__ == "__main__":
     input_data = read_input()
     prepared_data = prepare_data(input_data)
     rock_coord = create_rock_coordinates(prepared_data)
     fill_map_with_rocks(rock_coord)
     max_high = get_max_high()
-    units = 0
+    # units = 0
+    # while True:
+    #     result = simulate_sand(max_high)
+    #     if not result:
+    #         break
+    #     units += 1
+    # print(f"Number of sand units: {units}")
+
+    units2 = 0
     while True:
-        result = simulate_sand(max_high)
-        if not result:
+        x, y = simulate_sand2(max_high)
+        units2 += 1
+        if (x, y) == SAND_SOURCE:
             break
-        units += 1
-    print(f"Number of sand units: {units}")
+    print(f"Number of sand units for part2: {units2}")
